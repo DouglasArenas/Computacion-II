@@ -25,3 +25,4 @@ if os.path.isfile(texto1):
     file_2.close()
 else:
     print("No existe el archivo")
+    
