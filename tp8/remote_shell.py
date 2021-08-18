@@ -5,7 +5,7 @@ import subprocess as sp
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 host = ""
-port = 9009
+port = 6000
 
 serversocket.bind((host, port))
 
