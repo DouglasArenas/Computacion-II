@@ -1,25 +1,37 @@
 import asyncio
+import time
 
-async def encontrar_divisibles(rango, div_por):
-    
-    print("Buscando numeros en el rango {} divisibles por {}".format(rango, div_por))
-    encontrado = []
-    for i in range(rango):
-        if i % div_por == 0:
-            encontrado.append(i)
-        if i % 500000 == 0: #por cada 500000 ciclos espera y revisa el levelloop
-            await asyncio.sleep(0.001)
-    print("Listo con nums en el rango {} divisibles por {}".format(rango, div_por))
-    return encontrado
+async def handle_echo(reader, writer):
+    #print(f"Esperando datos del cliente (durmiendo {asyncio.all_tasks()})")
+    for t in asyncio.all_tasks():
+        print(f"Tarea: {t}")
+    data = await reader.read(100)
+    message = data.decode()
+    addr = writer.get_extra_info('peername')
+
+    print(f"Received {message!r} from {addr!r}")
+
+    print(f"Send: {message!r}")
+    writer.write(data)
+    print("encolando el mayuscula")
+    writer.write(data.upper())
+    print("ejecutando el drain()")
+    await writer.drain()
+
+    print("Close the connection")
+    writer.close()
+    for t in asyncio.all_tasks():
+        print(f"Cerrando Tarea: {t}")
 
 async def main():
-    
-    divs1 = encontrar_divisibles(50800000, 34113)
-    divs2 = encontrar_divisibles(100052, 3210)
-    divs3 = encontrar_divisibles(500, 3)
-    await asyncio.gather(divs1, divs2, divs3)
+    server = await asyncio.start_server(
+        handle_echo, '127.0.0.1', 8888)
 
+    addr = server.sockets[0].getsockname()
+    print(f'Serving on {addr} {asyncio.current_task()}')
 
-if __name__ == '__main__':
-    asyncio.run(main())
-
+    async with server:
+        print(f"Tareas:\n{asyncio.all_tasks()}")
+        await server.serve_forever()
+        print(f"Tarea: {asyncio.all_task()}")
+asyncio.run(main())

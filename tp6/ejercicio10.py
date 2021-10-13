@@ -1,5 +1,5 @@
-from multiprocessing import Process, Queue, current_process
-import time
+from multiprocessing import Process, Queue
+import os, time
 
 
 def hijo(i, q):

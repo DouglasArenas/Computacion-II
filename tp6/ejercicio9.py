@@ -1,32 +1,26 @@
-from multiprocessing import Process, Pipe, current_process
-import sys
+from multiprocessing import Process, Pipe
+import os, time
 
 
-def receptor(conn):
-    print("Capturando entrada, utilice Ctrl + D para salir")
-    print("Ingrese lineas de texto:\n")
-    sys.stdin = open(0)
-    while True:
-        try:
-            line = input()
-            conn.send(line)
-        except EOFError:
-            print("Exit")
-            break
-
-
-def lector(conn):
-    hijo = current_process().pid
-    while True:
-        line = conn.recv()
-        print(f"Leyendo (PID={hijo}): {line}")
+def function(r,w, nproces):
+    print("Número de proceso: %d" % nproces)
+    if (nproces == 2):
+        print("%d: proceso %d listo y recibiendo: %s\n" % (nproces, os.getpid(), r.recv()))
+        r.send("Corriendo")
+    if(nproces == 1):
+        w.send("Proceso %d listo y enviando" % (os.getpid()))
+        print(str(nproces) + w.recv())
+    r.close()
+    w.close()
+    print("Saliendo...")
 
 
 if __name__ == "__main__":
-    a, b = Pipe()
-    p1 = Process(target=receptor, args=(a,))
-    p2 = Process(target=lector, args=(b,))
+    r, w = Pipe()
+    p1 = Process(target=function, args=(r,w,1))
+    p2 = Process(target=function, args=(r,w,2))
     p1.start()
     p2.start()
     p1.join()
-    p2.kill()
+    p2.join()
+

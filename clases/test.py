@@ -1,28 +1,21 @@
 import asyncio
 import time
 
-async def encontrar_divisibles(rango, div_por):
-    print("Buscando numeros en el rango {} divisibles por {}".format(rango, div_por))
-    encontrado = []
-    for i in range(rango):
-        if i % div_por == 0:
-            encontrado.append(i)
-        if i % 50000 == 1:
-            await asyncio.sleep(0.0001)
-    print("Listo con nums en el rango {} divisibles por {}".format(rango, div_por))
-    return encontrado
+async def say_after(delay, what):
+    await asyncio.sleep(delay)
+    print(what)
 
 async def main():
-    divs1 = encontrar_divisibles(50800000, 34113)
-    divs2 = encontrar_divisibles(100052, 3210)
-    divs3 = encontrar_divisibles(500, 3)
-    print("esperando....")
-    time.sleep(3)
-    res = await asyncio.gather(divs1, divs2, divs3)
-    return res
+    # creo dos corutinas asincronicas
+    task1 = say_after(4, 'hello')
+    task2 = say_after(2, 'world')
 
-if __name__ == '__main__':
-    loop = asyncio.get
-    res = loop_until_complete(main())
-    #asyncio.run(main())
+    print(f"started at {time.strftime('%X')}")
 
+    # Wait until both tasks are completed (should take
+    # around 2 seconds.)
+    await asyncio.gather(task1,task2)
+
+    print(f"finished at {time.strftime('%X')}")
+
+asyncio.run(main())
