@@ -1,0 +1,2 @@
+sudo ss -npltu|grep python3
+telnet localhost -p "puerto sin comillas"
