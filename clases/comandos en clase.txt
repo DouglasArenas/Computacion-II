@@ -1,0 +1,3 @@
+sudo ss -npltu|grep python3
+telnet localhost -p "puerto sin comillas"
+sudo tcpdump -nni lo port "puerto sin comillas" --> retorna ip y tipo de protocolo

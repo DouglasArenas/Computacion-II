@@ -1,0 +1,26 @@
+asyncIO
+
+generadores
+GIL: global interpreter lock
+
+corutinas: ejecuta funciones a medida que esten listas, si aun no tiene
+respuesta pasa a la siguiente
+
+API: alto nivel, bajo nivel
+
+bajo nivel: agregar las tareas manualmente y luego decirle que haga el loop
+en dichas tareas
+
+alto nivel: async.run corre las tareas automaticamente
+
+
+5 UPLAS del Socket que identifica cada conexion:
+
+. direccion ip destino
+. direccion ip origen
+. puerto destino
+. puerto origen
+. protocolo de transporte, capa 4
+
+tcpdump es el sniffer de trafico para ver que esta viajando por la red
+en el momento en que se hace la comunicacion
