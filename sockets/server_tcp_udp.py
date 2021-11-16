@@ -22,7 +22,7 @@ if __name__ == '__main__':
             file = open(path, 'a')
             content = client.recv(1024)
             file.write(content.decode('ascii') + "\n")
-            if content == '':
+            if content == '' or len(content) == 0:
                 print ("Saliendo...")
                 break
             print("Mensaje recibido")
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             file = open(path, 'a')
             content, addr = server.recvfrom(1024)
             file.write(content.decode('ascii') + "\n")
-            if content == '':
+            if content == '' or len(content) == 0:
                 print ("Saliendo...")
                 break
             print("Mensaje recibido")

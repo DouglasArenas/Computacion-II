@@ -4,7 +4,7 @@ if __name__ == '__main__':
     (opt, arg) = getopt.getopt(sys.argv[1:], "a:p:t:")
     for op, ar in opt:
         if op == "-a":
-            host = int(ar)
+            host = str(ar)
         if op == "-p":
             port = int(ar)
         if op == "-t":
@@ -18,7 +18,7 @@ if __name__ == '__main__':
                 content = input("Ingrese contenido: ")
                 client.send(content.encode('ascii'))
             except EOFError:
-                print("Cliente desconectado")
+                print("Saliendo...")
                 client.close()
                 sys.exit()
     
@@ -29,5 +29,7 @@ if __name__ == '__main__':
                 content = input("Ingrese contenido: ")
                 client.sendto(content.encode('ascii'), (host, port))
             except EOFError:
+                client.sendto("".encode('ascii'), (host, port))
                 print("Saliendo...")
+                client.close()
                 sys.exit()
