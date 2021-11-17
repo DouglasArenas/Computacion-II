@@ -1,37 +1,22 @@
-import sys
-import socket
-import getopt
+import sys, socket, getopt, datetime
 
-try:
-    (opt, arg) = getopt.getopt(sys.argv[1:], 'a:p:t:', [])
-except getopt.GetoptError as err:
-    print(err)
-    sys.exit(1)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = ""
-port = 6000
+port = 1234
+client.connect((host, port))
+print("Conectado\nIngrese un comando")
+command = ""
 
-try:
-    s.connect((host,port))
-except ConnectionRefusedError:
-    print("Conexión rechazada")
-    sys.exit()
-
-while True:
-    try:
-        msg = input("> ")
-        if msg == "":
-            pass
-        else:
-            s.send(msg.encode('utf8'))
-            data = s.recv(1024).decode('utf8')
-            print(data)
-            if msg == 'exit':
-                print("Saliendo...")
-                s.close()
-                break
-    except EOFError:
-        s.close()
-        break
+while command != "exit":
+    command = input(">")
+    client.send(command.encode("ascii"))
+    answer = client.recv(1024).decode("ascii")
+    print(answer)
+    (opt, arg) = getopt.getopt(sys.argv[1:], "l:")
+    for op, ar in opt:
+        if op == "-l":
+            date = datetime.datetime.today()
+            path = str(ar)
+            file = open(path, "a")
+            file.writelines(date + "\t" + command + "\n")            
