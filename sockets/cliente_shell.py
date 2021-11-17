@@ -16,7 +16,7 @@ while command != "exit":
     (opt, arg) = getopt.getopt(sys.argv[1:], "l:")
     for op, ar in opt:
         if op == "-l":
-            date = datetime.datetime.today()
+            date = str(datetime.datetime.today())
             path = str(ar)
             file = open(path, "a")
             file.writelines(date + "\t" + command + "\n")            
